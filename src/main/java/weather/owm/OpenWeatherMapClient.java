@@ -14,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -24,6 +25,7 @@ public class OpenWeatherMapClient {
 
     private static final String OWM_API_2_5_URL = "http://api.openweathermap.org/data/2.5/forecast";//"http://api.openweathermap.org/data/2.5/forecast";
     private static final String OWM_API_1_0_URL = "http://api.openweathermap.org/geo/1.0/direct";
+    private static final String OWM_API_2_5_URL_ONECALL = "https://api.openweathermap.org/data/2.5/onecall";
 
     private Client client;
     private WebTarget webTarget;
@@ -43,12 +45,23 @@ public class OpenWeatherMapClient {
 
     private String getURL(String service){
         if(service.equals("weather"))
-            return getURL();
+            return OWM_API_2_5_URL_ONECALL;
         else if(service.equals("geo"))
             return OWM_API_1_0_URL;
         else
             return null;
     }
+
+    public ArrayList<WeatherData> getWeatherForecast(double lat, double lon){
+        return requestWeatherForecast(lat,lon);
+    }
+
+    public ArrayList<WeatherData> requestWeatherForecast(double lat, double lon){
+        final Response response = webTarget.queryParam("lat",lat).queryParam("lon",lon).queryParam("units","metric").queryParam("exclude","current,minutely,hourly,alerts").request(MediaType.APPLICATION_JSON).get();
+        final JsonObject jsonObject = Json.createReader(response.readEntity(InputStream.class)).readObject();
+        return jsonResponseToWeatherDataOnecall(jsonObject);
+    }
+
 
     public ArrayList<WeatherData> getWeatherForecast(String cityName){
         return requerstWeatherForecast(cityName);
@@ -82,6 +95,37 @@ public class OpenWeatherMapClient {
 
         return weatherData;
     }
+
+    private ArrayList<WeatherData> jsonResponseToWeatherDataOnecall(JsonObject jsonObject){
+        ArrayList<WeatherData> weatherData = new ArrayList<>();
+
+        Date currentDate = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(currentDate);
+
+        JsonArray list = jsonObject.getJsonArray("daily");
+        for (JsonValue value : list){
+            JsonObject mainData = value.asJsonObject().getJsonObject("temp");
+            final float tempCelsiusMax = (float) mainData.getJsonNumber("max").doubleValue();
+            final float tempCelsiusMin = (float) mainData.getJsonNumber("min").doubleValue();
+
+            String clouds = "";
+            JsonArray weather = value.asJsonObject().getJsonArray("weather");
+            for (JsonValue weatherValue:weather){
+                clouds = weatherValue.asJsonObject().getJsonString("description").getString();
+            }
+
+            Date date = c.getTime();
+
+            weatherData.add(new WeatherData(tempCelsiusMax,tempCelsiusMin,clouds,date));
+
+            c.add(Calendar.DAY_OF_MONTH,1);
+        }
+
+        return weatherData;
+    }
+
+
 
     public Coordinates getGeocodingCoordinates(String cityName){
         return requestGeocodingCoordinates(cityName);

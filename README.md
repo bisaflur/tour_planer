@@ -1,4 +1,4 @@
-# getting-started project
+# tour_planer project
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
