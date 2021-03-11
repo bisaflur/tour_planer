@@ -1,7 +1,9 @@
 package weather.service;
 
+import weather.model.Coordinates;
 import weather.model.WeatherData;
 import weather.owm.OwmClientCommand;
+import weather.owm.OwmClientCommandGeo;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -24,11 +26,23 @@ public class WeatherService {
     @Path("/getWeather/{city}")
     public ArrayList<WeatherData> getWeather(@PathParam("city") final String city){
 
+
+        final OwmClientCommandGeo owmClientCommandGeo = new OwmClientCommandGeo(city);
+        final Coordinates coordinates = owmClientCommandGeo.execute();
+
+        final OwmClientCommand owmClientCommand = new OwmClientCommand(coordinates.getLat(),coordinates.getLon());
+        final ArrayList<WeatherData> weatherData = owmClientCommand.execute();
+
+        return weatherData;
+
+        /*
         final OwmClientCommand owmClientCommand = new OwmClientCommand(city);
         final ArrayList<WeatherData> weatherData = owmClientCommand.execute();
 
         return weatherData;
 
+         */
     }
+
 
 }
