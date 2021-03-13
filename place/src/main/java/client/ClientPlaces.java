@@ -1,10 +1,10 @@
-package weather.owm;
+package client;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import weather.model.Place;
+import model.Place;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -52,24 +52,33 @@ public class ClientPlaces {
             JSONParser parse = new JSONParser();
             JSONObject jsonO = (JSONObject) parse.parse(line);
             JSONArray jsonArray = (JSONArray) jsonO.get("searchResults");
-
-            for(int i=0;i<jsonArray.size();i++) //Places in ArrayList speichern
-            {
-                JSONObject jsonObject = (JSONObject)jsonArray.get(i);
-                JSONObject ls = (JSONObject) jsonObject.get("fields");
-                String name = (String) jsonObject.get("name");
-                String address = (String) ls.get("address");
-                double lat = (double) ls.get("lat");
-                double lon = (double) ls.get("lng");
-                places.add(new Place(name,address,lat,lon));
+            if (jsonArray != null) {
+                for (int i = 0; i < jsonArray.size(); i++) //Places in ArrayList speichern
+                {
+                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                    JSONObject ls = (JSONObject) jsonObject.get("fields");
+                    String name = (String) jsonObject.get("name");
+                    String address = (String) ls.get("address");
+                    double lat = (double) ls.get("lat");
+                    double lon = (double) ls.get("lng");
+                    places.add(new Place(name, address, lat, lon));
+                }
+                return places;
             }
+            return fall();
         }
-        return places;
+    }
+
+    private ArrayList<Place> fall(){
+        ArrayList<Place> pl = new ArrayList<>();
+        Place place = new Place("","",0.0, 0.0);
+        pl.add(place);
+        return pl;
     }
 
     private String urlBuilder(String city, double radius){
         return API_URL + "?origin=" + city + "&radius=" + radius +
-              "&maxMatches=10&ambiguities=ignore&hostedData=mqap.ntpois|group_sic_code=?|999333&outFormat=json&key="+
-               API_KEY;
+                "&maxMatches=10&ambiguities=ignore&hostedData=mqap.ntpois|group_sic_code=?|999333&outFormat=json&key="+
+                API_KEY;
     }
 }

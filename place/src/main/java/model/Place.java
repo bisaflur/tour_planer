@@ -1,4 +1,4 @@
-package weather.model;
+package model;
 
 public class Place {
     private String name;
