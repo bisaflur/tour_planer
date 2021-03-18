@@ -17,9 +17,11 @@ public class ClientPlaces {
     private double radius;
     private String city;
 
-    public static final String API_KEY = "7QFa8TNpvzCNryNLgwynUA4IO12WPDbA";
+    public static final String API_KEY = "1XAEDQC5MWMR3XHEEKSR2UQWTC5I50LH3NA0VJCCCGQCYTQH";
 
-    private static final String API_URL = "https://www.mapquestapi.com/search/v2/radius";
+    private static final String API_URL = "https://api.foursquare.com/v2/venues/explore?client_id=";
+
+    private static final String CLIENT_ID = "T2OCNN2Q0UTLKJGWAS2LR0EZIMTUWHYVIJMTBQZCUKA43TBN";
 
     public ClientPlaces(String city, double radius){
         this.city = city;
@@ -49,20 +51,39 @@ public class ClientPlaces {
                 line += sc.nextLine();
             }
             sc.close();
+
             JSONParser parse = new JSONParser();
-            JSONObject jsonO = (JSONObject) parse.parse(line);
-            JSONArray jsonArray = (JSONArray) jsonO.get("searchResults");
-            if (jsonArray != null) {
-                for (int i = 0; i < jsonArray.size(); i++) //Places in ArrayList speichern
-                {
-                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                    JSONObject ls = (JSONObject) jsonObject.get("fields");
-                    String name = (String) jsonObject.get("name");
-                    String address = (String) ls.get("address");
-                    double lat = (double) ls.get("lat");
-                    double lon = (double) ls.get("lng");
-                    places.add(new Place(name, address, lat, lon));
+            JSONObject jsonResponse = (JSONObject) parse.parse(line);
+            JSONObject jsonObject = (JSONObject) jsonResponse.get("response");
+            JSONArray groups = (JSONArray) jsonObject.get("groups");
+
+            if (groups != null) {
+                    JSONObject groupsObject = (JSONObject) groups.get(0);
+                    JSONArray items = (JSONArray) groupsObject.get("items");
+                for (Object item : items) {
+                    JSONObject itemsObject = (JSONObject) item;
+                    JSONObject venue = (JSONObject) itemsObject.get("venue");
+
+                    String name = (String) venue.get("name");
+                    String Id = (String) venue.get("id");
+
+                    //Parsing Address
+                    JSONObject locationObject = (JSONObject) venue.get("location");
+                    String adrArgument = (String) locationObject.get("address");
+                    String adrArgument1 = (String) locationObject.get("postalCode");
+                    String adrArgument2 = (String) locationObject.get("city");
+                    String adrArgument3 = (String) locationObject.get("country");
+
+                    String address = adrArgument + ", " + adrArgument1 + " " + adrArgument2 +
+                            ", " + adrArgument3;
+
+                    JSONArray categories = (JSONArray) venue.get("categories");
+                    JSONObject categoriesObject = (JSONObject) categories.get(0);
+                    String category = (String) categoriesObject.get("name");
+
+                    places.add(new Place(Id, name, category, address));
                 }
+
                 return places;
             }
             return fall();
@@ -71,14 +92,14 @@ public class ClientPlaces {
 
     private ArrayList<Place> fall(){
         ArrayList<Place> pl = new ArrayList<>();
-        Place place = new Place("","",0.0, 0.0);
+        Place place = new Place("","", "","");
         pl.add(place);
         return pl;
     }
 
     private String urlBuilder(String city, double radius){
-        return API_URL + "?origin=" + city + "&radius=" + radius +
-                "&maxMatches=10&ambiguities=ignore&hostedData=mqap.ntpois|group_sic_code=?|999333&outFormat=json&key="+
-                API_KEY;
+        return API_URL + CLIENT_ID  + "&client_secret=" + API_KEY + "&v=20180323&categoryId=4d4b7104d754a06370d81259,52e81612bcbc57f1066b7a21," +
+                "52e81612bcbc57f1066b7a14,4bf58dd8d48988d163941735,5744ccdfe4b0c0459246b4d9&limit=100&radius=" + radius +
+                "&near=" + city;
     }
 }

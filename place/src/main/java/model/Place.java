@@ -1,15 +1,17 @@
 package model;
 
+import javax.enterprise.inject.Default;
+
 public class Place {
     private String name;
     private String address;
-    private double lat;
-    private double lon;
+    private String id;
+    private String category;
 
-    public Place(String name, String address, double lat, double lon){
+    public Place(String id, String name, String category, String address){
+        this.id = id;
         this.name = name;
-        this.lat = lat;
-        this.lon = lon;
+        this.category = category;
         this.address = address;
     }
 
@@ -21,11 +23,7 @@ public class Place {
         return address;
     }
 
-    public double getLat(){
-        return lat;
-    }
+    public String getId(){return id;}
 
-    public double getLon(){
-        return lon;
-    }
+    public String getCategory(){return category;}
 }
