@@ -117,6 +117,6 @@ public class Sight {
         if (!(obj instanceof Sight))
             return false;
         final Sight other = (Sight) obj;
-        return Objects.equals(name,other.name) && Objects.equals(address,other.address) && Objects.equals(city,other.city) && Objects.equals(radius,other.radius);
+        return Objects.equals(name,other.name) && Objects.equals(address,other.address) && Objects.equals(city,other.city);
     }
 }

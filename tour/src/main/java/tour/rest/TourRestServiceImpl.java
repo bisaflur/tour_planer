@@ -50,6 +50,7 @@ public class TourRestServiceImpl implements TourRestService{
             ArrayList<Sight> toRemove = new ArrayList<>();
             Sight[] response;
 
+            boolean newRadius = false;
 
             if(sights.isEmpty()){
                 addSight(city,radius);
@@ -61,6 +62,11 @@ public class TourRestServiceImpl implements TourRestService{
                     if( radius < sight.getRadius() ){
                         toRemove.add(sight);
                     }
+                    else if( radius > sight.getRadius()){
+                        newRadius = true;
+                    }
+                    else
+                        newRadius = false;
                 }
 
                 for (Sight sight : toRemove){
@@ -84,9 +90,13 @@ public class TourRestServiceImpl implements TourRestService{
                     }
                 }
 
-
-                response = sights.toArray(new Sight[sights.size()]);
-
+                if(newRadius){
+                    addSight(city,radius);
+                    response = getSights(city,radius);
+                }
+                else {
+                    response = sights.toArray(new Sight[sights.size()]);
+                }
             }
 
             return response;
@@ -106,13 +116,28 @@ public class TourRestServiceImpl implements TourRestService{
 
     @Override
     public void addSight(String city, double radius){
+
        // daten von places holen
-        Sight[] sights = TourClient.consumeSights(city,radius);
+        ArrayList<Sight> sights = new ArrayList<>(Arrays.asList(TourClient.consumeSights(city,radius)));
+        Collection<Sight> existingSights = sightDao.find("city",city).list();
+        ArrayList<Sight> toRemove = new ArrayList<>();
+
+        for(Sight s : sights){
+            for(Sight eS : existingSights){
+                if(s.equals(eS)){
+                    toRemove.add(s);
+                }
+            }
+        }
+
+        for (Sight s : toRemove)
+            sights.remove(s);
+
 
         for (Sight sight : sights){
             sightDao.persist(sight);
         }
-       // sightDao.persist(new Sight());
+
     }
 
     @Override
