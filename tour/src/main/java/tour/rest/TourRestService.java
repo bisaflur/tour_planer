@@ -42,4 +42,5 @@ public interface TourRestService {
     @DELETE
     @Path("/{name}")
     Response deleteSight(@PathParam("name") String name);
+
 }

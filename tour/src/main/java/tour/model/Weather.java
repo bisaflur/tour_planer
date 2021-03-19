@@ -2,6 +2,8 @@ package tour.model;
 
 import java.util.Date;
 import java.util.Objects;
+import javax.json.bind.annotation.JsonbCreator;
+import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,10 +15,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 public class Weather {
 
-
-    private long id;
-
-    private String city;
 
     private String clouds;
 
@@ -30,27 +28,20 @@ public class Weather {
         super();
     }
 
-    public Weather(String clouds, double tempMax, double tempMin, Date date){
+    @JsonbCreator
+    public Weather(
+            @JsonbProperty("clouds") String clouds,
+            @JsonbProperty("temperatureCelsiusMax") double temperatureMax,
+            @JsonbProperty("temperatureCelsiusMin") double temperatureMin,
+            @JsonbProperty("timeStamp") Date date
+    ){
         this.clouds = clouds;
-        this.temperatureMax = tempMax;
-        this.temperatureMin = tempMin;
+        this.temperatureMax = temperatureMax;
+        this.temperatureMin = temperatureMin;
         this.date = date;
     }
 
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getCity(){return city;}
-
-    public void setCity(String city){
-        this.city = city;
-    }
 
     public String getClouds() {
         return clouds;

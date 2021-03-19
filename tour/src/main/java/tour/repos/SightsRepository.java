@@ -8,6 +8,7 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.control.ActivateRequestContext;
 import javax.transaction.Transactional;
+import java.util.Collection;
 
 @ActivateRequestContext
 @ApplicationScoped
@@ -43,6 +44,17 @@ public class SightsRepository implements PanacheRepository<Sight>{
             logger.error("Exception during add", e);
             throw e;
         }
+    }
+
+    @Override
+    @Transactional
+    public long deleteAll()
+    {
+        logger.info("Call to deleteAll()");
+
+        getEntityManager().createQuery("DELETE FROM Sight").executeUpdate();
+
+        return 0;
     }
 
 }

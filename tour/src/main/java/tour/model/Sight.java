@@ -1,5 +1,7 @@
 package tour.model;
 
+import javax.json.bind.annotation.JsonbCreator;
+import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -24,6 +26,8 @@ public class Sight {
     @Column(nullable = false, length = 256)
     private String address;
 
+    @Column(nullable = false,length = 256)
+    private String category;
 
     @Column(nullable = false, length = 256)
     private String city;
@@ -36,11 +40,11 @@ public class Sight {
         super();
     }
 
-    public Sight(String name, String address, String city, double radius){
+    @JsonbCreator
+    public Sight(@JsonbProperty("name") String name,@JsonbProperty("address") String address,@JsonbProperty("category") String category){
         this.name = name;
         this.address = address;
-        this.city = city;
-        this.radius = radius;
+        this.category = category;
         this.dateOfRequest = new Date();
     }
 
@@ -113,6 +117,6 @@ public class Sight {
         if (!(obj instanceof Sight))
             return false;
         final Sight other = (Sight) obj;
-        return Objects.equals(name,other.name) && Objects.equals(address,other.address) && Objects.equals(city,other.city) && Objects.equals(radius,other.radius) && Objects.equals(dateOfRequest,other.dateOfRequest);
+        return Objects.equals(name,other.name) && Objects.equals(address,other.address) && Objects.equals(city,other.city) && Objects.equals(radius,other.radius);
     }
 }
