@@ -1,7 +1,8 @@
 package model;
 
-import javax.enterprise.inject.Default;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class Place {
     private String name;
     private String address;
