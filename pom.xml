@@ -9,6 +9,7 @@
     <modules>
         <module>place</module>
       <module>weather</module>
+      <module>tour</module>
     </modules>
     <properties>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
