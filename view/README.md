@@ -1,6 +1,6 @@
 # view
 
-## Project setup
+## Project setup with node
 ```
 npm install
 ```
@@ -19,6 +19,13 @@ npm run build
 ```
 npm run lint
 ```
+## Project setup with docker
+### Build docker file
+```
+docker build -t frontend-vuejs/frontend-vuejs-app .
+```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Run docker file
+```
+docker run -it -p 80:80 --rm --name vuejs-app-1 frontend-vuejs/frontend-vuejs-app
+```

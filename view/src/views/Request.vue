@@ -92,7 +92,7 @@ export default {
     submit () {
       this.$router.push({
         name: 'Plan',
-        params: { city: this.cityt, range: this.ranget }
+        params: { city: this.formCity, range: this.formRange }
       })
     }
   }

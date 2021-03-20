@@ -6,11 +6,13 @@
       <div class="col card hoverable s10 pull-s1 m10 pull-m1 l8 pull-l2">
       <form>
           <div class="card-content">
-          <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+          <button class="btn waves-effect waves-light" type="submit" name="action"  @click.stop.prevent="submit()">Submit
             <i class="material-icons right">send</i>
           </button>
-          <Item/>
-            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+            <div v-for="pointOfInterest in pointOfInterests" :key="pointOfInterest.id">
+              <Item  :info="pointOfInterest"/>
+            </div>
+            <button class="btn waves-effect waves-light" type="submit" name="action"  @click.stop.prevent="submit()">Submit
               <i class="material-icons right">send</i>
             </button>
         </div>
@@ -22,11 +24,49 @@
 
 <script>
 import Item from '../components/Item.vue'
+/* import axios from 'axios' */
 
 export default {
   name: 'Plan',
   components: {
     Item
+  },
+  /* mounted () {
+    axios
+      .get('url')
+      .then(response => (this.pointOfInterest = response))
+  }, */
+  data () {
+    return {
+      resultList: [],
+      pointOfInterests: [{
+        id: 1,
+        name: 'Point of Interest Name',
+        category: 'Category'
+      }, {
+        id: 2,
+        name: 'Point of Interest Name 2',
+        category: 'Category 2'
+      }]
+    }
+  },
+  methods: {
+    submit () {
+      const checkbox = document.getElementsByTagName('input')
+      for (let i = 0; i < checkbox.length; i++) {
+        if (checkbox[i].checked) {
+          this.resultList.push(this.pointOfInterests[i])
+        }
+      }
+      if (this.resultList.length > 0) {
+        this.$router.push({
+          name: 'Result',
+          params: { result: JSON.stringify(this.resultList) }
+        })
+      } else {
+        alert('you did not select any Point of interest')
+      }
+    }
   }
 }
 </script>
