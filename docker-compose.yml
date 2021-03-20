@@ -7,3 +7,15 @@ services:
       context: ./view
     ports:
         - "80:80"
+  poi-service:
+    container_name: place-service
+    build:
+      context: ./place/src/main/docker
+    ports:
+      - "8080:8080"
+  weather-service:
+    container_name: weather-service
+    build:
+      context: ./weather/src/main/docker
+    ports:
+      - "8081:8081"
