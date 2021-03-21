@@ -7,15 +7,27 @@ services:
       context: ./view
     ports:
         - "80:80"
-  poi-service:
-    container_name: place-service
-    build:
-      context: ./place/src/main/docker
-    ports:
-      - "8080:8080"
-  weather-service:
+
+  weather:
     container_name: weather-service
     build:
-      context: ./weather/src/main/docker
+      context: ./weather
+      dockerfile: ./src/main/docker/Dockerfile.multistage
     ports:
-      - "8081:8081"
+      - "9080:8080"
+
+  tour:
+    container_name: tour-service
+    build:
+      context: ./tour
+      dockerfile: ./src/main/docker/Dockerfile.multistage
+    ports:
+      - "8086:8080"
+
+  place:
+    container_name: place-service
+    build:
+      context: ./place
+      dockerfile: ./src/main/docker/Dockerfile.jvm
+    ports:
+      - "8080:8080"
