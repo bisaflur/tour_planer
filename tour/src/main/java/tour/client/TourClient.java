@@ -19,6 +19,10 @@ public class TourClient {
         Client client = ClientBuilder.newClient();
         Response response = client.target(WEATHER_API + city).request().get();
         Weather[] weathers = response.readEntity(Weather[].class);
+
+        for(Weather weather : weathers)
+            weather.setCity(city);
+
         response.close();
         client.close();
         return weathers;

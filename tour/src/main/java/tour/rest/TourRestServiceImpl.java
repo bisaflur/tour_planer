@@ -23,7 +23,7 @@ public class TourRestServiceImpl implements TourRestService{
     @Inject
     private SightsRepository sightDao;
 
-    private Weather[] weatherData;
+    private ArrayList<Weather> weatherData = new ArrayList<>();
 
     @Override
     public Sight[] getAllSights() {
@@ -34,8 +34,21 @@ public class TourRestServiceImpl implements TourRestService{
     }
 
     @Override
-    public Weather[] getAllWeathers() {
-        return weatherData;
+    public Weather[] getAllWeathers(String city) {
+
+        ArrayList<Weather> temp = new ArrayList<>();
+
+        for (Weather w : weatherData){
+            if(w.getCity().equals(city)){
+                temp.add(w);
+            }
+        }
+
+        for (Weather w : temp){
+            weatherData.remove(w);
+        }
+
+        return temp.toArray(new Weather[temp.size()]);
     }
 
 
@@ -104,7 +117,9 @@ public class TourRestServiceImpl implements TourRestService{
         }
         finally
         {
-            weatherData = TourClient.consumeWeather(city);
+            Weather[] temp = TourClient.consumeWeather(city);
+            for (Weather w : temp)
+                weatherData.add(w);
         }
 
     }
@@ -146,8 +161,7 @@ public class TourRestServiceImpl implements TourRestService{
     }
 
     @Override
-    public Response deleteSight(String name) {
+    public void deleteSights() {
         sightDao.deleteAll();
-        return null;
     }
 }
