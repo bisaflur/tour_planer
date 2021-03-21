@@ -3,7 +3,11 @@
   <div class="col l3 m4 s6">
     <div class="row valign-wrapper">
     <div class="col s5 paddingZero">
-      <img class="weather-img" src="../assets/logo.png">
+      <img v-if="info.clouds.includes('clear')" class="weather-img" src="../assets/weatherIcons/day_clear.svg">
+      <img v-else-if="info.clouds.includes('snow')" class="weather-img" src="../assets/weatherIcons/snow.svg">
+      <img v-else-if="info.clouds.includes('clouds')" class="weather-img" src="../assets/weatherIcons/cloudy.svg">
+      <img v-else-if="info.clouds.includes('rain')" class="weather-img" src="../assets/weatherIcons/rain.svg">
+      <img v-else class="weather-img" src="../assets/logo.png">
     </div>
     <div class="col s7">
       <div class="row weather-text-container">

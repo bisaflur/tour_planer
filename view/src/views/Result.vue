@@ -18,7 +18,7 @@
 <script>
 import Item from '../components/ItemContent.vue'
 import Weather from '../components/Weather'
-// import axios from 'axios'
+import axios from 'axios'
 
 export default {
   name: 'Result',
@@ -80,12 +80,12 @@ export default {
         }
       ]
     }
-  } /*,
+  },
   mounted () {
     axios
       .get('http://localhost:9080/weather/getWeather/Heilbronn')
       .then(response => (this.weatherData = response))
-  } */
+  }
 }
 </script>
 
