@@ -24,6 +24,8 @@ public class Weather {
 
     private Date date;
 
+    private String city;
+
     public Weather(){
         super();
     }
@@ -73,6 +75,12 @@ public class Weather {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getCity(){return this.city;}
+
+    public void setCity(String city){
+        this.city = city;
     }
 
     @Override

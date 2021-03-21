@@ -56,8 +56,8 @@ COPY --chown=1001 target/quarkus-app/*.jar /deployments/
 COPY --chown=1001 target/quarkus-app/app/ /deployments/app/
 COPY --chown=1001 target/quarkus-app/quarkus/ /deployments/quarkus/
 
-COPY --from=BUILD /usr/src/app/target/lib/* /deployments/lib/
-COPY --from=BUILD /usr/src/app/target/*-runner.jar /deployments/app.jar
+#COPY --from=BUILD /usr/src/app/target/lib/* /deployments/lib/
+#COPY --from=BUILD /usr/src/app/target/*-runner.jar /deployments/app.jar
 
 EXPOSE 9080
 USER 1001

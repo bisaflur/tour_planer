@@ -18,9 +18,9 @@ public interface TourRestService {
     Sight[] getAllSights();
 
     @GET
-    @Path("/weather")
+    @Path("/weather/{city}")
     @Produces(MediaType.APPLICATION_JSON)
-    Weather[] getAllWeathers();
+    Weather[] getAllWeathers(@PathParam("city")String city);
 
     @GET
     @Path("/{city}&{radius}")
@@ -40,7 +40,7 @@ public interface TourRestService {
     Response changeSight(@PathParam("name") String name, Sight sight);
 
     @DELETE
-    @Path("/{name}")
-    Response deleteSight(@PathParam("name") String name);
+    @Path("/clear")
+    void deleteSights();
 
 }
