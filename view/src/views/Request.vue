@@ -1,7 +1,7 @@
 <template>
 
   <div>
-    <section class="container">
+    <section class="container z-fix">
       <h1 id="title">
         <span v-lettering class="title hide">Plan</span>
         <span v-lettering class="title hide">Your</span>
@@ -10,7 +10,7 @@
     </section>
     <div class="background"></div>
     <div class="background_white"></div>
-    <div class="valign-wrapper row login-box">
+    <div class="valign-wrapper row login-box z-fix">
       <div class="col card hoverable s10 pull-s1 m10 pull-m1 l6 pull-l3">
         <form>
           <div class="card-content">
@@ -90,10 +90,12 @@ export default {
       }, 1000)
     },
     submit () {
-      this.$router.push({
-        name: 'Plan',
-        params: { city: this.formCity, range: this.formRange }
-      })
+      if (this.formCity !== '') {
+        this.$router.push({
+          name: 'Plan',
+          params: { city: this.formCity, range: this.formRange }
+        })
+      }
     }
   }
 }
@@ -104,6 +106,9 @@ export default {
 @import '../assets/scss/Title-animeation.css';
 .hide{
   opacity: 0;
+}
+.z-fix{
+  z-index: 2;
 }
 .container {
   margin-top: 50px;
@@ -144,7 +149,6 @@ export default {
 
 .background_white, .background {
   position: absolute;
-  z-index: -10;
   height: 100vh;
   width: 100vw;
   top: 0;

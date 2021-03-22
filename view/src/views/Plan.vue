@@ -34,16 +34,7 @@ export default {
     return {
       resultList: [],
       pointOfInterests: {
-        data: [
-          {
-            id: 1,
-            name: 'Point of Interest Name',
-            category: 'Category'
-          }, {
-            id: 2,
-            name: 'Point of Interest Name 2',
-            category: 'Category 2'
-          }]
+        data: []
       }
     }
   },
