@@ -1,14 +1,12 @@
 <template>
   <div>
-    <div class="background"></div>
-    <div class="background_white"></div>
     <div class="valign-wrapper row login-box">
       <div class="col card hoverable s10 pull-s1 m10 pull-m1 l8 pull-l2">
           <div class="card-content">
             <div class="row">
-              <Weather :info="data" v-for="data in weatherData" :key="data.id"/>
+              <Weather :info="data" v-for="data in weatherData.data" :key="data.timeStamp"/>
             </div>
-              <Item  :info="pointOfInterest" v-for="pointOfInterest in pointOfInterests" :key="pointOfInterest.id"/>
+            <Item :info="pointOfInterest" v-for="pointOfInterest in pointOfInterests" :key="pointOfInterest.id"/>
           </div>
       </div>
     </div>
@@ -18,6 +16,7 @@
 <script>
 import Item from '../components/ItemContent.vue'
 import Weather from '../components/Weather'
+import axios from 'axios'
 
 export default {
   name: 'Result',
@@ -28,39 +27,15 @@ export default {
   data () {
     return {
       pointOfInterests: JSON.parse(this.$route.params.result),
-      weatherData: [{
-        id: 1,
-        date: '18.03.21',
-        temp: '30C',
-        look: 'cloudy'
-      },
-      {
-        id: 2,
-        date: '19.03.21',
-        temp: '26C',
-        look: 'sunny'
-      },
-      {
-        id: 3,
-        date: '20.03.21',
-        temp: '22C',
-        look: 'rain'
-      },
-      {
-        id: 4,
-        date: '21.03.21',
-        temp: '15C',
-        look: 'storm'
-      },
-      {
-        id: 5,
-        date: '22.03.21',
-        temp: '30C',
-        look: 'sunny'
-      }]
+      weatherData: {
+        data: []
+      }
     }
   },
   mounted () {
+    axios
+      .get('http://localhost:9080/weather/getWeather/' + this.$route.params.city)
+      .then(response => (this.weatherData = response))
   }
 }
 </script>
