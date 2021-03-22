@@ -15,7 +15,7 @@ export default {
 <style lang="scss">
 #app {
   min-height: 100vh;
-  background-color: #65C2C9;
+  background-color: #00ae9d;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
