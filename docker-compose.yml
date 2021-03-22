@@ -12,7 +12,7 @@ services:
     container_name: weather-service
     build:
       context: ./weather
-      dockerfile: ./src/main/docker/Dockerfile.multistage
+      dockerfile: ./src/main/docker/Dockerfile.jvm
     ports:
       - "9080:8080"
 
@@ -20,7 +20,7 @@ services:
     container_name: tour-service
     build:
       context: ./tour
-      dockerfile: ./src/main/docker/Dockerfile.multistage
+      dockerfile: ./src/main/docker/Dockerfile.jvm
     ports:
       - "8086:8080"
 
@@ -30,4 +30,4 @@ services:
       context: ./place
       dockerfile: ./src/main/docker/Dockerfile.jvm
     ports:
-      - "8080:8080"
+      - "9090:8080"
