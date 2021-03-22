@@ -30,4 +30,4 @@ services:
       context: ./place
       dockerfile: ./src/main/docker/Dockerfile.jvm
     ports:
-      - "8080:8080"
+      - "9090:8080"
