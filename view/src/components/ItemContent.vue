@@ -12,6 +12,9 @@
       <div class="row">
         <h1>{{ info.name }}</h1>
       </div>
+      <div class="row" v-if="!info.address.includes('null')">
+        <p>{{info.address}}</p>
+      </div>
     </div>
   </div>
 </template>
