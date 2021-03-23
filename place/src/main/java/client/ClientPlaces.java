@@ -9,6 +9,7 @@ import model.Place;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -46,7 +47,7 @@ public class ClientPlaces {
             throw new RuntimeException("HttpResponseCode: " + responseCode);
         else {
             String line = "";
-            Scanner sc = new Scanner(con.getInputStream());
+            Scanner sc = new Scanner(con.getInputStream(), StandardCharsets.UTF_8);
             while (sc.hasNext()) {
                 line += sc.nextLine();
             }
