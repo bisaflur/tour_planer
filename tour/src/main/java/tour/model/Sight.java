@@ -26,7 +26,6 @@ public class Sight {
     @Column(nullable = false, length = 256)
     private String address;
 
-    @Column(nullable = false,length = 256)
     private String category;
 
     @Column(nullable = false, length = 256)
@@ -110,14 +109,22 @@ public class Sight {
         this.place_id = place_id;
     }
 
+    public String getCategory(){
+        return this.category;
+    }
+
+    public void setCategory(String category){
+        this.category = category;
+    }
+
     @Override
     public String toString(){
-        return String.format("Sight [id='%d', name='%s', address='%s', city='%s', radius='%f', dateOfRequest='%s']",id,name,address,city,radius,dateOfRequest);
+        return String.format("Sight [name='%s', address='%s', city='%s', radius='%f', dateOfRequest='%s', category='%s', place_id='%s']",name,address,city,radius,dateOfRequest,category,place_id);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(id,name,address,city,radius,dateOfRequest);
+        return Objects.hash(name,address,city,radius,dateOfRequest,category,place_id);
     }
 
     @Override
@@ -128,6 +135,6 @@ public class Sight {
         if (!(obj instanceof Sight))
             return false;
         final Sight other = (Sight) obj;
-        return Objects.equals(name,other.name) && Objects.equals(address,other.address) && Objects.equals(city,other.city);
+        return Objects.equals(name,other.name) && Objects.equals(address,other.address) && Objects.equals(city,other.city) && Objects.equals(category,other.category);
     }
 }
