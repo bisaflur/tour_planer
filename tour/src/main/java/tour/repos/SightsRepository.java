@@ -9,6 +9,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.control.ActivateRequestContext;
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.Optional;
 
 @ActivateRequestContext
 @ApplicationScoped
@@ -44,6 +45,35 @@ public class SightsRepository implements PanacheRepository<Sight>{
             logger.error("Exception during add", e);
             throw e;
         }
+    }
+
+    @Override
+    @Transactional
+    public void delete(final Sight sight)
+    {
+        logger.info("Call to deleteSight({})", sight);
+
+        Optional.ofNullable(sight).map(Sight::getName).ifPresent(this::deleteByName);
+    }
+
+    @Transactional
+    public boolean deleteByName(final String key)
+    {
+        logger.info("Call to deleteByName({})", key);
+
+        if (key != null)
+        {
+            getEntityManager()
+                    .createNativeQuery("DELETE FROM sights WHERE name = :name")
+                    .setParameter("name", key)
+                    .executeUpdate();
+
+            final long updateNum = delete("name", key);
+
+            return updateNum > 0;
+        }
+
+        return false;
     }
 
     @Override

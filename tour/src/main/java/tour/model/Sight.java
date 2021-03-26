@@ -32,6 +32,8 @@ public class Sight {
     @Column(nullable = false, length = 256)
     private String city;
 
+    private String place_id;
+
     private double radius;
 
     private Date dateOfRequest;
@@ -41,11 +43,12 @@ public class Sight {
     }
 
     @JsonbCreator
-    public Sight(@JsonbProperty("name") String name,@JsonbProperty("address") String address,@JsonbProperty("category") String category){
+    public Sight(@JsonbProperty("name") String name,@JsonbProperty("address") String address,@JsonbProperty("category") String category, @JsonbProperty("id")String place_id){
         this.name = name;
         this.address = address;
         this.category = category;
         this.dateOfRequest = new Date();
+        this.place_id = place_id;
     }
 
 
@@ -99,14 +102,22 @@ public class Sight {
         this.dateOfRequest = dateOfRequest;
     }
 
+    public String getPlace_id(){
+        return this.place_id;
+    }
+
+    public void setPlace_id(String place_id){
+        this.place_id = place_id;
+    }
+
     @Override
     public String toString(){
-        return String.format("Sight [name='%s', address='%s', city='%s', radius='%f', dateOfRequest='%s']",name,address,city,radius,dateOfRequest);
+        return String.format("Sight [id='%d', name='%s', address='%s', city='%s', radius='%f', dateOfRequest='%s']",id,name,address,city,radius,dateOfRequest);
     }
 
     @Override
     public int hashCode(){
-        return Objects.hash(name,address,city,radius,dateOfRequest);
+        return Objects.hash(id,name,address,city,radius,dateOfRequest);
     }
 
     @Override
