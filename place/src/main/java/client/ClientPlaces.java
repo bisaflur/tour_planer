@@ -44,7 +44,7 @@ public class ClientPlaces {
         int responseCode = con.getResponseCode();
 
         if (responseCode != 200)
-            throw new RuntimeException("HttpResponseCode: " + responseCode);
+            return fall();
         else {
             String line = "";
             Scanner sc = new Scanner(con.getInputStream(), StandardCharsets.UTF_8);
@@ -52,7 +52,7 @@ public class ClientPlaces {
                 line += sc.nextLine();
             }
             sc.close();
-
+            //Parsing JSON Response
             JSONParser parse = new JSONParser();
             JSONObject jsonResponse = (JSONObject) parse.parse(line);
             JSONObject jsonObject = (JSONObject) jsonResponse.get("response");
@@ -70,6 +70,7 @@ public class ClientPlaces {
 
                     //Parsing Address
                     JSONObject locationObject = (JSONObject) venue.get("location");
+
                     String adrArgument = (String) locationObject.get("address");
                     String adrArgument1 = (String) locationObject.get("postalCode");
                     String adrArgument2 = (String) locationObject.get("city");
