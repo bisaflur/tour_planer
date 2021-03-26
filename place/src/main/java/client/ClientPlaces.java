@@ -100,7 +100,8 @@ public class ClientPlaces {
 
     private String urlBuilder(String city, double radius){
         return API_URL + CLIENT_ID  + "&client_secret=" + API_KEY + "&v=20180323&categoryId=4d4b7104d754a06370d81259,52e81612bcbc57f1066b7a21," +
-                "52e81612bcbc57f1066b7a14,4bf58dd8d48988d163941735,5744ccdfe4b0c0459246b4d9&limit=100&radius=" + radius +
+                "52e81612bcbc57f1066b7a14,4bf58dd8d48988d163941735,4bf58dd8d48988d181941735,5744ccdfe4b0c0459246b4d9&limit=100&radius=" + radius +
                 "&near=" + city;
     }
+
 }
