@@ -40,7 +40,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:9090/place/getPlaces/' + this.$route.params.city + '&' + this.$route.params.range * 1000)
+      .get('http://localhost:8086/sights/' + this.$route.params.city + '&' + this.$route.params.range * 1000)
       .then(response => (this.pointOfInterests = response))
   },
   methods: {

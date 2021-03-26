@@ -34,7 +34,7 @@ export default {
   },
   mounted () {
     axios
-      .get('http://localhost:9080/weather/getWeather/' + this.$route.params.city)
+      .get('http://localhost:8086/sights/weather/' + this.$route.params.city)
       .then(response => (this.weatherData = response))
   }
 }
