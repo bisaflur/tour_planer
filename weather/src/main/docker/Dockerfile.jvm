@@ -21,13 +21,11 @@
 # docker run -i --rm -p 8080:8080 -p 5005:5005 -e JAVA_ENABLE_DEBUG="true" quarkus/getting-started-jvm
 #
 ###
+FROM maven as BUILD
 
-#FROM adoptopenjdk/maven-openjdk11 as BUILD
-
-#COPY src /usr/src/app/src
-#COPY ./pom.xml /usr/src/app
-#WORKDIR /usr/src/app
-#RUN mvn package
+COPY . /usr/src/app/
+WORKDIR /usr/src/app
+RUN mvn package
 
 FROM registry.access.redhat.com/ubi8/ubi-minimal:8.3
 
@@ -51,10 +49,10 @@ RUN microdnf install curl ca-certificates ${JAVA_PACKAGE} \
 # Configure the JAVA_OPTIONS, you can add -XshowSettings:vm to also display the heap size.
 ENV JAVA_OPTIONS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
 # We make four distinct layers so if there are application changes the library layers can be re-used
-COPY --chown=1001 target/quarkus-app/lib/ /deployments/lib/
-COPY --chown=1001 target/quarkus-app/*.jar /deployments/
-COPY --chown=1001 target/quarkus-app/app/ /deployments/app/
-COPY --chown=1001 target/quarkus-app/quarkus/ /deployments/quarkus/
+COPY --from=BUILD /usr/src/app/target/quarkus-app/lib/ /deployments/lib/
+COPY --from=BUILD /usr/src/app/target/quarkus-app/*.jar /deployments/
+COPY --from=BUILD /usr/src/app/target/quarkus-app/app/ /deployments/app/
+COPY --from=BUILD /usr/src/app/target/quarkus-app/quarkus/ /deployments/quarkus/
 
 #COPY --from=BUILD /usr/src/app/target/lib/* /deployments/lib/
 #COPY --from=BUILD /usr/src/app/target/*-runner.jar /deployments/app.jar
