@@ -1,9 +1,9 @@
 <template>
-  <div class="row valign-wrapper item" v-on:click="check" :id="info.id + '-container'">
+  <div class="row valign-wrapper item" v-on:click="check" :id="info.place_id + '-container'">
     <div class="col s1 ">
       <p>
         <label>
-          <input type="checkbox" :id="info.id" class="filled-in" v-model="checkBox"/>
+          <input type="checkbox" :id="info.place_id" class="filled-in" v-model="checkBox"/>
           <span></span>
         </label>
       </p>
@@ -32,11 +32,11 @@ export default {
   },
   methods: {
     check: function (event) {
-      document.getElementById(String(this.info.id)).checked ^= 1
-      if (document.getElementById(String(this.info.id)).checked) {
-        document.getElementById(this.info.id + '-container').style.backgroundColor = '#26a69a'
+      document.getElementById(String(this.info.place_id)).checked ^= 1
+      if (document.getElementById(String(this.info.place_id)).checked) {
+        document.getElementById(this.info.place_id + '-container').style.backgroundColor = '#26a69a'
       } else {
-        document.getElementById(this.info.id + '-container').style.backgroundColor = 'white'
+        document.getElementById(this.info.place_id + '-container').style.backgroundColor = 'white'
       }
     }
   },

@@ -32,7 +32,7 @@ export default {
       return (this.info.timeStamp || '').split('T')[0]
     },
     trimTemp: function () {
-      return this.info.temperatureCelsiusMax.toFixed(1) + ' C°'
+      return this.info.temperatureMax.toFixed(1) + ' C°'
     }
   }
 }

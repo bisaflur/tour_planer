@@ -7,7 +7,7 @@
           <button class="btn waves-effect waves-light" type="submit" name="action"  @click.stop.prevent="submit()">Submit
             <i class="material-icons right">send</i>
           </button>
-            <div v-for="pointOfInterest in pointOfInterests.data" :key="pointOfInterest.id">
+            <div v-for="pointOfInterest in pointOfInterests.data" :key="pointOfInterest.place_id">
               <Item  :info="pointOfInterest"/>
             </div>
             <button class="btn waves-effect waves-light" type="submit" name="action"  @click.stop.prevent="submit()">Submit
