@@ -21,13 +21,13 @@ docker build -f src/main/docker/Dockerfile.jvm -t tour/tour-service .
 
 Run
 ```
-docker run -i --rm -p 8086:8086 tour/tour-service
+docker run -i --rm -p 8086:8080 tour/tour-service
 ```
 
 ## Browser
 ```
 http://localhost:8086/sights/{city}&{radius}
 http://localhost:8086/sights/weather/{city}
+http://localhost:8086/sights/clear
 http://localhost:8086/q/swagger-ui/#/
 ```
-

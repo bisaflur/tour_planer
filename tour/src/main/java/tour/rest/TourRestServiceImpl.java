@@ -59,9 +59,15 @@ public class TourRestServiceImpl implements TourRestService{
 
             Collection<Sight> allSights = sightDao.find("city",city).list();
 
+            System.out.println(allSights);
+
             ArrayList<Sight> sights = new ArrayList<>(allSights);
+
+            if(!sights.isEmpty())
+                System.out.println(sights.get(0).getAddress());
+
             ArrayList<Sight> toRemove = new ArrayList<>();
-            Sight[] response;
+            Sight[] response = null;
 
             boolean newRadius = false;
 
@@ -100,6 +106,8 @@ public class TourRestServiceImpl implements TourRestService{
 
                     if(diffMonth > 3){
                         //update data
+                        updateSight(city,radius);
+                        response = getSights(city,radius);
                     }
                 }
 
@@ -107,7 +115,7 @@ public class TourRestServiceImpl implements TourRestService{
                     addSight(city,radius);
                     response = getSights(city,radius);
                 }
-                else {
+                else if (response == null){
                     response = sights.toArray(new Sight[sights.size()]);
                 }
             }
@@ -117,9 +125,16 @@ public class TourRestServiceImpl implements TourRestService{
         }
         finally
         {
-            Weather[] temp = TourClient.consumeWeather(city);
-            for (Weather w : temp)
-                weatherData.add(w);
+
+            try {
+                Weather[] temp = TourClient.consumeWeather(city);
+                for (Weather w : temp)
+                    weatherData.add(w);
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+
+
         }
 
     }
@@ -132,32 +147,55 @@ public class TourRestServiceImpl implements TourRestService{
     @Override
     public void addSight(String city, double radius){
 
-       // daten von places holen
-        ArrayList<Sight> sights = new ArrayList<>(Arrays.asList(TourClient.consumeSights(city,radius)));
-        Collection<Sight> existingSights = sightDao.find("city",city).list();
-        ArrayList<Sight> toRemove = new ArrayList<>();
+        try {
 
-        for(Sight s : sights){
-            for(Sight eS : existingSights){
-                if(s.equals(eS)){
-                    toRemove.add(s);
+            // daten von places holen
+            ArrayList<Sight> sights = new ArrayList<>(Arrays.asList(TourClient.consumeSights(city, radius)));
+            Collection<Sight> existingSights = sightDao.find("city", city).list();
+            ArrayList<Sight> toRemove = new ArrayList<>();
+
+            for (Sight s : sights) {
+                for (Sight eS : existingSights) {
+                    if (s.equals(eS)) {
+                        toRemove.add(s);
+                    }
                 }
             }
+
+            for (Sight s : toRemove)
+                sights.remove(s);
+
+
+            for (Sight sight : sights) {
+                sightDao.persist(sight);
+            }
+
         }
-
-        for (Sight s : toRemove)
-            sights.remove(s);
-
-
-        for (Sight sight : sights){
-            sightDao.persist(sight);
+        catch (Exception e){
+            e.printStackTrace();
         }
-
     }
 
     @Override
-    public Response changeSight(String name, Sight sight) {
-        return null;
+    public void updateSight(String city, double radius) {
+
+        try {
+
+            // daten von places holen
+            ArrayList<Sight> sights = new ArrayList<>(Arrays.asList(TourClient.consumeSights(city, radius)));
+            Collection<Sight> existingSights = sightDao.find("city = ?1 and radius = ?2", city, radius).list();
+
+
+            for (Sight es : existingSights) {
+                sightDao.delete(es);
+            }
+
+            for (Sight s : sights) {
+                sightDao.persist(s);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override

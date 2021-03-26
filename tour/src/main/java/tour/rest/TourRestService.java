@@ -35,9 +35,9 @@ public interface TourRestService {
     void addSight(String city, double radius);
 
     @PUT
-    @Path("/{name}")
+    @Path("/{city}&{radius}")
     @Consumes(MediaType.APPLICATION_JSON)
-    Response changeSight(@PathParam("name") String name, Sight sight);
+    void updateSight(@PathParam("city") String city,@PathParam("radius") double radius);
 
     @DELETE
     @Path("/clear")
