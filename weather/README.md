@@ -16,7 +16,7 @@ mvnw compile quarkus:dev -Dquarkus.http.port=9080
 Create a docker image with:
 
 ```
-docker build -f src/main/docker/Dockerfile.jvm -t weather/weather-service ./weather
+docker build -f src/main/docker/Dockerfile.jvm -t weather/weather-service .
 ```
 
 Run
