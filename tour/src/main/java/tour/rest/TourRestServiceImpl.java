@@ -59,12 +59,7 @@ public class TourRestServiceImpl implements TourRestService{
 
             Collection<Sight> allSights = sightDao.find("city",city).list();
 
-            System.out.println(allSights);
-
             ArrayList<Sight> sights = new ArrayList<>(allSights);
-
-            if(!sights.isEmpty())
-                System.out.println(sights.get(0).getAddress());
 
             ArrayList<Sight> toRemove = new ArrayList<>();
             Sight[] response = null;
