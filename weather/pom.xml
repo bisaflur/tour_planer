@@ -70,6 +70,10 @@
       <artifactId>hystrix-core</artifactId>
       <version>1.5.18</version>
     </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-rest-client</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
