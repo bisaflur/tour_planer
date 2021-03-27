@@ -114,10 +114,7 @@ public class TourRestServiceImpl implements TourRestService{
                     for (Sight sight : sights) {
                         if (radius < sight.getRadius()) {
                             toRemove.add(sight);
-                        } else if (radius > sight.getRadius()) {
-                            newRadius = true;
-                        } else
-                            newRadius = false;
+                        }
                     }
 
                     for (Sight sight : toRemove) {
@@ -144,11 +141,7 @@ public class TourRestServiceImpl implements TourRestService{
                     }
                 }
 
-                if(newRadius){
-                    addSight(city,radius);
-                    response = getSights(city,radius);
-                }
-                else if (response == null){
+                if (response == null){
                     response = sights.toArray(new Sight[sights.size()]);
                 }
             }
