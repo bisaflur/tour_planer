@@ -72,19 +72,57 @@ public class TourRestServiceImpl implements TourRestService{
             }
             else {
 
+                boolean entryExists = false;
+
                 for(Sight sight : sights){
-                    if( radius < sight.getRadius() ){
-                        toRemove.add(sight);
+                    if(radius==sight.getRadius()){
+                        entryExists = true;
+                        break;
                     }
-                    else if( radius > sight.getRadius()){
-                        newRadius = true;
-                    }
-                    else
-                        newRadius = false;
                 }
 
-                for (Sight sight : toRemove){
-                    sights.remove(sight);
+                if(!entryExists){
+
+                    ArrayList<Sight> newSights = new ArrayList<>(Arrays.asList(TourClient.consumeSights(city, radius)));
+
+
+                    for (Sight sight : newSights){
+                        boolean exists = false;
+                        for (Sight es : sights){
+                            if(sight.getName().equals(es.getName())){
+                                if(sight.getRadius() < es.getRadius()){
+                                    sightDao.delete(es);
+                                    sightDao.persist(sight);
+                                }
+                                exists = true;
+
+                            }
+
+                        }
+                        if(!exists){
+                            sightDao.persist(sight);
+                        }
+                    }
+
+                    response = getSights(city,radius);
+                }
+
+
+
+                if(entryExists) {
+
+                    for (Sight sight : sights) {
+                        if (radius < sight.getRadius()) {
+                            toRemove.add(sight);
+                        } else if (radius > sight.getRadius()) {
+                            newRadius = true;
+                        } else
+                            newRadius = false;
+                    }
+
+                    for (Sight sight : toRemove) {
+                        sights.remove(sight);
+                    }
                 }
 
                 for(Sight sight : sights){
@@ -159,6 +197,7 @@ public class TourRestServiceImpl implements TourRestService{
 
             for (Sight s : toRemove)
                 sights.remove(s);
+
 
 
             for (Sight sight : sights) {

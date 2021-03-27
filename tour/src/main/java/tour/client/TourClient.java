@@ -9,8 +9,10 @@ import javax.ws.rs.core.Response;
 
 public class TourClient {
 
-    private static final String WEATHER_API = "http://weather:8080/weather/getWeather/";
-    private static final String PLACES_API = "http://place:8080/place/getPlaces/";
+    private static final String WEATHER_API = "http://localhost:9080/weather/getWeather/";
+    //private static final String WEATHER_API = "http://weather:8080/weather/getWeather/";
+    private static final String PLACES_API = "http://localhost:9090/place/getPlaces/";
+    //private static final String PLACES_API = "http://place:8080/place/getPlaces/";
 
 
     public static Weather[] consumeWeather(String city) {
