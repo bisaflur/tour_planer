@@ -1,29 +1,37 @@
-# test PlacesService
+#Places-Service
+
+This project uses Quarkus, the Supersonic Subatomic Java Framework.
+
+If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+
 ###build and run
+
+Console
+
 ```
-start(build) place
+mvnw compile quarkus:dev -Dquarkus.http.port=8080
 ```
-### browser
-```
-http://localhost:8080/place/getPlaces/{City}&{Range}
-```
+
 # Docker
 
-### Terminal
+Create a docker image with:
+
 ```
-maven clean,install place
+docker build -f src/main/docker/Dockerfile.jvm -t quarkus/place-jvm .
 ```
+
+Run
 ```
-docker build -f src/main/docker/Dockerfile.jvm -t place/place-service .
-```
-```
-docker run -i --rm -p 8080:8080 place/place-service
+docker run -i --rm -p 8080:8080 quarkus/place-jvm
 ```
 
 # Swagger/OpenAPI
 ```
-run/build place
+http://localhost:8080/q/swagger-ui/
 ```
+
+### Browser
 ```
-search in Browser: http://localhost:8080/q/swagger-ui/#/default
+http://localhost:8080/place/version
+http://localhost:8080/place/getPlaces/{City}&{Radius}
 ```
